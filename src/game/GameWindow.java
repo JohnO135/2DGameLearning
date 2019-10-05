@@ -54,4 +54,9 @@ public class GameWindow {
         
     }
     
+    public Canvas getCanvas()
+    {
+      return canvas;  //Allows other classes to have access to this canvas
+    }
+    
 }

@@ -13,7 +13,8 @@ public class Launcher {
     
     
     public static void main(String[] args){
-        new Game("This is a title", 600 ,600);
+        Game game = new Game("Working on it", 600 ,600);
+        game.start();
     }
     
     

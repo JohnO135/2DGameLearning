@@ -5,6 +5,11 @@
  */
 package game;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
+
 /**
  *
  * @author John
@@ -19,6 +24,11 @@ public class Game implements Runnable{
     public int height;
     public String title;
     
+    private BufferStrategy bs;
+    private Graphics g;
+    
+    private BufferedImage testImage;
+    
     public Game(String title, int width, int height)
     {
        this.width = width;
@@ -30,7 +40,9 @@ public class Game implements Runnable{
     private void init()
     {
         window = new GameWindow(title, width, height);
+        testImage = ImageLoader.loadImage("\\resources\\test.png");
     }
+    
     
     private void tick() //updater for values
     {
@@ -38,6 +50,27 @@ public class Game implements Runnable{
     
     private void render() //renders the images to canvas
     {
+        //This sets the buffer strategy to the buffer strategy of the canvas
+        //Adding this buffer prevents flickering by prerendering images
+        bs = window.getCanvas().getBufferStrategy();
+        if(bs == null)//When first starting up there is no buffer strategy so this will create one
+        {
+            window.getCanvas().createBufferStrategy(3);
+            return;
+        } 
+        //Allows us to draw. Essentially our drawing tool
+        g = bs.getDrawGraphics();
+        
+        // 0 and 0 are left corner points. width and height tell it to clear the whole screen
+        g.clearRect(0, 0, width, height); //Clears the screan within the rectangle
+
+        //Draw commands
+        g.drawImage(testImage, 20, 20, null);
+        
+        
+        //Command to display the commands to canvas
+        bs.show(); 
+        g.dispose(); // Ensures the graphics object is handled properly
     }
     
 
