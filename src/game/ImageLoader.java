@@ -10,7 +10,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 /**
- *
+ * The purpose of this class is to load images as BufferedImage objects of the images we save as resources
  * @author John
  */
 public class ImageLoader {
@@ -18,7 +18,7 @@ public class ImageLoader {
     public static BufferedImage loadImage(String path)
     {
         try{
-            return ImageIO.read(ImageLoader.class.getResource(path));
+            return ImageIO.read(ImageLoader.class.getResource(path)); //Accesses the path from another package
         }
         catch (IOException e)
         {

@@ -40,7 +40,7 @@ public class Game implements Runnable{
     private void init()
     {
         window = new GameWindow(title, width, height);
-        testImage = ImageLoader.loadImage("\\resources\\test.png");
+        testImage = ImageLoader.loadImage("\\resources\\textures\\test.png");
     }
     
     
