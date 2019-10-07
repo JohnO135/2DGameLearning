@@ -40,12 +40,15 @@ public class Game implements Runnable{
     private void init()
     {
         window = new GameWindow(title, width, height);
-        testImage = ImageLoader.loadImage("\\resources\\textures\\test.png");
+        testImage = ImageLoader.loadImage("\\resources\\test.png");
     }
     
-    
+    int x = 0;
+    int y = 0;
     private void tick() //updater for values
     {
+      x+= 1;
+      y += 1;  
     }
     
     private void render() //renders the images to canvas
@@ -65,7 +68,7 @@ public class Game implements Runnable{
         g.clearRect(0, 0, width, height); //Clears the screan within the rectangle
 
         //Draw commands
-        g.drawImage(testImage, 20, 20, null);
+        g.drawImage(testImage, x, y, null);
         
         
         //Command to display the commands to canvas
@@ -79,10 +82,34 @@ public class Game implements Runnable{
     {
         init();
         
+        int fps = 60; //Limits the speed of gameplay to be consistent between machines
+        double timePerTick = 1000000000 / fps; //There are 1 billion nanoseconds per second so helps cap out the framerate
+        double  delta = 0;
+        long now;
+        long lastTime = System.nanoTime(); //Returns current time in nanoseconds
+        long timer = 0;
+        int ticks = 0;
+        
         while(running) //While game is running the game is updating (Game loop
         {
-            tick();
-            render();
+            //This checks to see when there needs to be a tick based off our desired fps
+            now = System.nanoTime();
+            delta += (now - lastTime) / timePerTick;
+            timer += now - lastTime; //Amount of time since code above was last called
+            lastTime = now;
+            if(delta >= 1) //Once the delta goes over 1 then a fram will have passed;
+            { 
+                tick();
+                render();
+                ticks++;//To help count how many frames we're running at
+                delta--; //Resets the Delta
+            }
+            if(timer >= 1000000000) //Everytime the timer hits one seconds it prints how many ticks we ran
+            {
+                System.out.println("Ticks and Frames: " + ticks);
+                ticks = 0;
+                timer = 0;
+            }
         }
         
         stop();//Just in case the running value is false and game doesn't stop on it's own as a result
