@@ -47,6 +47,7 @@ public class GameWindow {
         //ensures the size of the canvas isn't resizable
         canvas.setMaximumSize(new Dimension(width, height));
         canvas.setMinimumSize(new Dimension(width, height));
+        canvas.setFocusable(false); //Only focuses on the JFrame
         
         //add canvas within the frame
         frame.add(canvas);
@@ -57,6 +58,11 @@ public class GameWindow {
     public Canvas getCanvas()
     {
       return canvas;  //Allows other classes to have access to this canvas
+    }
+    
+    public JFrame getJFrame()
+    {
+        return frame;
     }
     
 }

@@ -28,6 +28,9 @@ public class Game implements Runnable{
     private Graphics g;
     
     private BufferedImage testImage;
+    private KeyManager keyManager;
+    
+    private Player player;
     
     public Game(String title, int width, int height)
     {
@@ -40,15 +43,16 @@ public class Game implements Runnable{
     private void init()
     {
         window = new GameWindow(title, width, height);
-        testImage = ImageLoader.loadImage("\\resources\\test.png");
+        keyManager = new KeyManager(); //Initialize the KeyManager
+        //testImage = ImageLoader.loadImage("\\resources\\test.png");
+        window.getJFrame().addKeyListener(keyManager); //Add to game display jframe
+        player = new Player(this, 100, 100); //Initialize a player object
     }
     
-    int x = 0;
-    int y = 0;
     private void tick() //updater for values
     {
-      x+= 1;
-      y += 1;  
+      keyManager.tick(); //updates the manager for input
+      player.tick(); //update the player values
     }
     
     private void render() //renders the images to canvas
@@ -68,8 +72,8 @@ public class Game implements Runnable{
         g.clearRect(0, 0, width, height); //Clears the screan within the rectangle
 
         //Draw commands
-        g.drawImage(testImage, x, y, null);
-        
+        //g.drawImage(testImage, x, y, null);
+        player.render(g); //This uses the player's individual render method
         
         //Command to display the commands to canvas
         bs.show(); 
@@ -114,6 +118,12 @@ public class Game implements Runnable{
         
         stop();//Just in case the running value is false and game doesn't stop on it's own as a result
         
+    }
+    
+    //This is so that the player object can have access to the game's key manager
+    public KeyManager getKeyManager()
+    {
+        return keyManager;
     }
     
     public synchronized void start() //synchronized key word allows for threads to work in a synchronized fashion
